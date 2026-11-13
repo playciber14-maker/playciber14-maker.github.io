@@ -529,6 +529,11 @@ header, main, footer { position: relative; z-index: 2; }
 .pv-sizes { display: flex; gap: 6px; }
 .pv-sizes i { font-style: normal; width: 30px; height: 26px; border-radius: 6px; display: grid; place-items: center; background: rgba(43,82,120,.55); font-size: 12px; }
 .pv-status { margin-top: 4px; padding: 6px 10px; border-radius: 10px; background: #182533; font-size: 12px; }
+.project__preview--pay { display: grid; align-content: center; justify-items: start; gap: 12px; background: #0e1621; }
+.pv-invoice { display: grid; gap: 6px; padding: 12px 14px; border-radius: 12px; background: #182533; font-size: 14px; }
+.pv-invoice small { color: #8a9bab; }
+.pv-invoice b { font-size: 26px; }
+.pv-paybtn { justify-self: start; padding: 7px 16px; border-radius: 10px; background: #3cf2d6; color: #031513; font-weight: 700; font-size: 13px; }
 
 /* Process */
 .steps { display: grid; gap: 16px; }
