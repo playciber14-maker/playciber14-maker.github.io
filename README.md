@@ -25,13 +25,16 @@ python3 -m http.server 8080
 ```
 Потом открой http://localhost:8080
 
-## Выкладка на Netlify (бесплатно)
-1. Зайди на https://app.netlify.com/drop
-2. Перетащи туда папку `quarsell-portfolio` целиком.
-3. Получишь ссылку вида `что-то.netlify.app`. В настройках сайта (Site configuration → Change site name) можно сменить её, например на `quarsell.netlify.app`, если имя свободно.
-4. Чтобы обновить сайт, в разделе Deploys снова перетащи папку.
+## Хостинг: GitHub Pages
+Сайт живёт в репозитории `playciber14-maker/playciber14-maker.github.io` и открывается по адресу https://playciber14-maker.github.io
 
-Запасной вариант: GitHub Pages (залить папку в репозиторий, Settings → Pages → Deploy from branch).
+Как обновить сайт после правок:
+```bash
+git add -A
+git commit -m "что поменял"
+git push
+```
+Через 1–2 минуты изменения появятся на сайте.
 
 ## Как добавить свой проект
 Скопируй блок `<article class="project ...">` в `index.html`, поменяй текст. Если демки нет, кнопку «Открыть демо» можно заменить ссылкой на живой проект.
