@@ -202,11 +202,12 @@ main { position: relative; }
   width: 100%;
   display: grid; grid-template-columns: 32px 1fr auto; column-gap: 12px; row-gap: 4px; align-items: baseline;
   padding: 22px 0;
-  transition: opacity .3s, padding .45s var(--ease-out);
+  transition: opacity .3s;
 }
 .row__no { font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
 .row__name { font-family: var(--serif); font-size: clamp(26px, 3.6vw, 46px); line-height: 1.08; letter-spacing: -.015em; }
 .row__kind { grid-column: 2; grid-row: 2; font-size: 13px; color: var(--mute); }
+.row__name { transition: transform .45s var(--ease-out); }
 .row__go { grid-column: 3; grid-row: 1; font-size: 20px; transition: transform .45s var(--ease-out); }
 @media (min-width: 900px) {
   .row { grid-template-columns: 80px 1fr 220px 40px; column-gap: 0; padding: 26px 0; }
@@ -215,7 +216,8 @@ main { position: relative; }
 }
 @media (hover: hover) and (pointer: fine) {
   .index:hover .row { opacity: .32; }
-  .index .row:hover { opacity: 1; padding-left: 14px; }
+  .index .row:hover { opacity: 1; }
+  .row:hover .row__no, .row:hover .row__name { transform: translateX(14px); }
   .row:hover .row__go { transform: translateX(-14px); }
 }
 .row:focus-visible { outline-offset: -1px; }
