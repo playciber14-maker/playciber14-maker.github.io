@@ -90,6 +90,62 @@ $$(".scrub").forEach((el) => {
   update();
 });
 
+/* ---------- Линия прогресса прокрутки ---------- */
+{
+  let raf = 0;
+  const upd = () => {
+    raf = 0;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.setProperty("--p", max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)).toFixed(4) : 0);
+  };
+  window.addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(upd); }, { passive: true });
+  window.addEventListener("resize", upd);
+  upd();
+}
+
+/* ---------- Курсор-акцент и магнитные ссылки (только мышь) ---------- */
+if (canHover) {
+  const cur = document.createElement("div");
+  cur.className = "cur";
+  cur.setAttribute("aria-hidden", "true");
+  cur.innerHTML = "<span>Открыть</span>";
+  document.body.append(cur);
+
+  let x = -100, y = -100, tx = -100, ty = -100, raf = 0, seen = false;
+  const loop = () => {
+    const k = reduceMotion ? 1 : 0.22;
+    x += (tx - x) * k;
+    y += (ty - y) * k;
+    cur.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
+    raf = Math.abs(tx - x) > 0.3 || Math.abs(ty - y) > 0.3 ? requestAnimationFrame(loop) : 0;
+  };
+  document.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse") return;
+    tx = e.clientX; ty = e.clientY;
+    if (!seen) { x = tx; y = ty; seen = true; cur.classList.add("is-on"); }
+    const el = e.target.closest?.(".row, a, button");
+    cur.classList.toggle("is-row", !!el?.classList.contains("row"));
+    cur.classList.toggle("is-link", !!el && !el.classList.contains("row"));
+    cur.classList.toggle("is-hidden", !!e.target.closest?.("dialog[open]"));
+    if (!raf) raf = requestAnimationFrame(loop);
+  }, { passive: true });
+  document.documentElement.addEventListener("pointerleave", () => cur.classList.remove("is-on"));
+  document.documentElement.addEventListener("pointerenter", () => { if (seen) cur.classList.add("is-on"); });
+
+  // Магнитные: большая ссылка в контактах и кнопка в шапке чуть тянутся к курсору
+  if (!reduceMotion) {
+    $$(".contact__big, .bar__cta").forEach((el) => {
+      el.addEventListener("pointermove", (e) => {
+        const r = el.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width / 2)) * 0.18;
+        const dy = (e.clientY - (r.top + r.height / 2)) * 0.28;
+        el.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`;
+      });
+      el.addEventListener("pointerleave", () => { el.style.transform = ""; });
+    });
+  }
+}
+
 /* ---------- Превью строки, следует за курсором ---------- */
 const pv = $(".pv");
 if (canHover && pv) {
