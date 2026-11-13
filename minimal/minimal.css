@@ -163,7 +163,7 @@ main { position: relative; }
 @keyframes drift-a { to { transform: translate(-22vmax, 16vmax) scale(1.15); } }
 @keyframes drift-b { to { transform: translate(20vmax, -18vmax) scale(.9); } }
 
-/* ---------- Капля жидкого стекла (canvas под текстом первого экрана) ---------- */
+/* ---------- Рифлёное стекло (canvas под текстом первого экрана) ---------- */
 .hero__gl {
   position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; display: block;
   opacity: 0; transition: opacity .9s var(--ease);

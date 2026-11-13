@@ -41,13 +41,13 @@ if ("IntersectionObserver" in window && !reduceMotion) {
   targets.forEach((el) => { el.classList.add("rv-on"); io.observe(el); });
 }
 
-/* ---------- Капля жидкого стекла на первом экране ---------- */
+/* ---------- Панель рифлёного стекла на первом экране ---------- */
 // Тяжёлый модуль с Three.js грузим отдельно, когда заголовок уже появился.
 const hero = $(".hero");
 if (hero && !reduceMotion) {
   const fontsReady = document.fonts?.ready || Promise.resolve();
   Promise.all([fontsReady, new Promise((r) => setTimeout(r, 1400))])
-    .then(() => import("./glass.js?v=5"))
+    .then(() => import("./glass.js?v=6"))
     .then((m) => m.initGlass(hero))
     .catch((err) => console.warn("Стекло не загрузилось, остаётся обычный заголовок", err));
 }
