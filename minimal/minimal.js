@@ -41,6 +41,82 @@ if ("IntersectionObserver" in window && !reduceMotion) {
   targets.forEach((el) => { el.classList.add("rv-on"); io.observe(el); });
 }
 
+/* ---------- Стеклянная линза на первом экране ---------- */
+// Внутри линзы лежит копия первого экрана, увеличенная вокруг центра линзы.
+// С мышью линза идёт за курсором, без мыши сама медленно плавает над заголовком.
+const hero = $(".hero");
+if (hero && !reduceMotion) {
+  const ZOOM = 1.22;
+  const lens = document.createElement("div");
+  lens.className = "lens";
+  lens.setAttribute("aria-hidden", "true");
+  lens.inert = true;
+  const inner = document.createElement("div");
+  inner.className = "hero hero--clone";
+  inner.innerHTML = hero.innerHTML;
+  lens.appendChild(inner);
+  hero.appendChild(lens);
+
+  const title = $(".hero__title", hero);
+  let R = 0, cx = 0, cy = 0, ax = 0, ay = 0; // радиус, центр и размах плавания
+  let x = 0, y = 0, tx = 0, ty = 0, auto = true, visible = true, raf = 0, started = false;
+
+  const size = () => {
+    const h = hero.getBoundingClientRect();
+    const t = title.getBoundingClientRect();
+    inner.style.width = `${h.width}px`;
+    inner.style.height = `${h.height}px`;
+    R = lens.offsetWidth / 2;
+    cx = t.left - h.left + t.width / 2;
+    cy = t.top - h.top + t.height / 2;
+    // не даём линзе уезжать за край экрана
+    ax = Math.max(0, Math.min(t.width / 2 - R * 0.6, cx - R - 8, h.width - cx - R - 8));
+    ay = t.height * 0.3;
+  };
+
+  const frame = (now) => {
+    raf = 0;
+    if (!visible) return;
+    if (auto) {
+      const t = now / 1000;
+      tx = cx + Math.sin(t * 0.33) * ax;
+      ty = cy + Math.sin(t * 0.52 + 1) * ay;
+    }
+    const k = auto ? 0.04 : 0.14;
+    x += (tx - x) * k;
+    y += (ty - y) * k;
+    lens.style.transform = `translate3d(${(x - R).toFixed(1)}px, ${(y - R).toFixed(1)}px, 0)`;
+    inner.style.transformOrigin = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
+    inner.style.transform = `translate(${(R - x).toFixed(1)}px, ${(R - y).toFixed(1)}px) scale(${ZOOM})`;
+    raf = requestAnimationFrame(frame);
+  };
+  const run = () => { if (!raf && visible && started) raf = requestAnimationFrame(frame); };
+
+  hero.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse") return;
+    const h = hero.getBoundingClientRect();
+    auto = false;
+    tx = e.clientX - h.left;
+    ty = e.clientY - h.top;
+  });
+  hero.addEventListener("pointerleave", () => { auto = true; });
+  window.addEventListener("resize", size);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([en]) => { visible = en.isIntersecting; run(); }).observe(hero);
+  }
+
+  // Ждём шрифты и появление заголовка, потом показываем линзу
+  const start = () => {
+    size();
+    x = tx = cx + ax; y = ty = cy;
+    started = true;
+    lens.classList.add("is-on");
+    run();
+  };
+  const fontsReady = document.fonts?.ready || Promise.resolve();
+  Promise.all([fontsReady, new Promise((r) => setTimeout(r, 1200))]).then(start);
+}
+
 /* ---------- Превью строки, следует за курсором ---------- */
 const pv = $(".pv");
 if (canHover && pv) {
