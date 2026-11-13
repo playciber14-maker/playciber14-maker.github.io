@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quarsell — боты, сайты, веб-приложения</title>
+  <meta name="description" content="Quarsell — разработчик Telegram- и Discord-ботов, сайтов и веб-приложений. Работы и контакты.">
+  <meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e0e0d" media="(prefers-color-scheme: dark)">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Quarsell — боты, сайты, веб-приложения">
+  <meta property="og:description" content="Разработка Telegram- и Discord-ботов, сайтов и веб-приложений под задачи бизнеса.">
+  <meta property="og:locale" content="ru_RU">
+
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;1,400&family=Inter+Tight:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/demos.css">
+  <link rel="stylesheet" href="minimal.css">
+
+  <!-- three нужен только демке «3D-конфигуратор» -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body id="top">
+  <a class="skip" href="#works">К работам</a>
+
+  <header class="bar">
+    <a class="bar__mark" href="#top">Quarsell</a>
+    <nav class="bar__nav" aria-label="Разделы">
+      <a href="#works">Работы</a>
+      <a href="#services">Услуги</a>
+      <a href="#approach">Подход</a>
+      <a href="#contact">Контакт</a>
+    </nav>
+    <a class="bar__cta link" data-contact="telegram" href="#contact" target="_blank" rel="noopener">Написать</a>
+  </header>
+
+  <main>
+    <!-- Первый экран -->
+    <section class="hero">
+      <p class="hero__kicker">Разработчик · боты, сайты, веб-приложения</p>
+      <h1 class="hero__title">
+        <span class="line"><span>Боты, сайты</span></span>
+        <span class="line"><span>и веб-приложения,</span></span>
+        <span class="line"><span>в которых <em>нет лишнего.</em></span></span>
+      </h1>
+      <div class="hero__foot">
+        <p>Беру задачу целиком: от&nbsp;вопросов и&nbsp;плана до&nbsp;запуска и&nbsp;понятной инструкции.</p>
+        <a class="link" href="#works">Смотреть работы <span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+
+    <!-- Работы -->
+    <section class="block" id="works">
+      <header class="block__head">
+        <span class="block__no">01</span>
+        <h2 class="block__title">Работы</h2>
+        <p class="block__note">Восемь демо-проектов. Каждый открывается и&nbsp;работает прямо здесь.</p>
+      </header>
+
+      <ol class="index">
+        <li><button class="row" type="button" data-open="tg-bot" data-pv="14:30" data-cap="Запись подтверждена">
+          <span class="row__no">01</span><span class="row__name">Бот записи в&nbsp;шиномонтаж</span><span class="row__kind">Telegram-бот</span><span class="row__go" aria-hidden="true">→</span>
+        </button></li>
+        <li><button class="row" type="button" data-open="landing" data-pv="312 000 ₽" data-cap="Цена ремонта считается на лету">
+          <span class="row__no">02</span><span class="row__name">Лендинг ремонтной компании</span><span class="row__kind">Сайт</span><span class="row__go" aria-hidden="true">→</span>
+        </button></li>
+        <li><button class="row" type="button" data-open="discord" data-pv="/verify" data-cap="Проверка новичков и антиспам">
+          <span class="row__no">03</span><span class="row__name">Discord-бот верификации</span><span class="row__kind">Discord-бот</span><span class="row__go" aria-hidden="true">→</span>
+        </button></li>
+        <li><button class="row" type="button" data-open="crm" data-pv="Канбан" data-cap="Новые · В работе · Готово">
+          <span class="row__no">04</span><span class="row__name">Мини-CRM для заявок</span><span class="row__kind">Веб-приложение</span><span class="row__go" aria-hidden="true">→</span>
+        </button></li>
+        <li><button class="row" type="button" data-open="qr-menu" data-pv="Стол №7" data-cap="Заказ уходит владельцу в Telegram">
+          <span class="row__no">05</span><span class="row__name">QR-меню кафе</span><span class="row__kind">Сайт + Telegram</span><span class="row__go" aria-hidden="true">→</span>
+        </button></li>
+        <li><button class="row" type="button" data-open="configurator" data-pv="R16–R19" data-cap="Колесо в 3D, цена сразу">
+          <span class="row__no">06</span><span class="row__name">3D-конфигуратор дисков</span><span class="row__kind">Веб-приложение</span><span class="row__go" aria-hidden="true">→</span>
+        </button></li>
+        <li><button class="row" type="button" data-open="dashboard" data-pv="KPI" data-cap="Выручка, заказы, конверсия, чек">
+          <span class="row__no">07</span><span class="row__name">Дашборд для владельца бизнеса</span><span class="row__kind">Веб-приложение</span><span class="row__go" aria-hidden="true">→</span>
+        </button></li>
+        <li><button class="row" type="button" data-open="shop-bot" data-pv="Каталог" data-cap="Корзина, заказ и админка">
+          <span class="row__no">08</span><span class="row__name">Telegram-бот магазина</span><span class="row__kind">Telegram-бот</span><span class="row__go" aria-hidden="true">→</span>
+        </button></li>
+      </ol>
+    </section>
+
+    <!-- Услуги -->
+    <section class="block" id="services">
+      <header class="block__head">
+        <span class="block__no">02</span>
+        <h2 class="block__title">Услуги</h2>
+      </header>
+      <div class="cols">
+        <article class="col rv">
+          <h3>Telegram и&nbsp;Discord-боты</h3>
+          <p>Боты для записи, заказов, рассылок, модерации и&nbsp;автоматизации рутины.</p>
+          <ul>
+            <li>меню и кнопки, оплата, уведомления</li>
+            <li>база данных и админ-панель</li>
+            <li>модерация и верификация в Discord</li>
+          </ul>
+        </article>
+        <article class="col rv">
+          <h3>Сайты</h3>
+          <p>Лендинги, сайты-визитки и&nbsp;сайты компаний, которые быстро грузятся и&nbsp;приводят заявки.</p>
+          <ul>
+            <li>адаптив под телефоны</li>
+            <li>калькуляторы, формы, квизы</li>
+            <li>помощь с хостингом и доменом</li>
+          </ul>
+        </article>
+        <article class="col rv">
+          <h3>Веб-приложения</h3>
+          <p>Личные кабинеты, CRM, дашборды и&nbsp;внутренние инструменты под ваш процесс.</p>
+          <ul>
+            <li>интерактивный интерфейс</li>
+            <li>API и интеграции</li>
+            <li>хранение данных и доступы</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- Подход -->
+    <section class="block" id="approach">
+      <header class="block__head">
+        <span class="block__no">03</span>
+        <h2 class="block__title">Подход</h2>
+      </header>
+
+      <p class="statement rv">Сайты адаптивные и&nbsp;быстрые. Боты не&nbsp;падают на&nbsp;странных сообщениях. Ключи и&nbsp;токены не&nbsp;лежат в&nbsp;коде.</p>
+
+      <ol class="steps">
+        <li class="rv"><span>01</span><h3>Задача</h3><p>Обсуждаем цель, аудиторию, нужные функции и&nbsp;сроки.</p></li>
+        <li class="rv"><span>02</span><h3>План</h3><p>Составляю подробный план: что делаем, на&nbsp;чём и&nbsp;как проверим. Начинаю после вашего «ок».</p></li>
+        <li class="rv"><span>03</span><h3>Разработка</h3><p>Пишу код, показываю промежуточный результат, вношу правки.</p></li>
+        <li class="rv"><span>04</span><h3>Запуск</h3><p>Выкладываю проект, проверяю на&nbsp;телефоне и&nbsp;компьютере, передаю инструкцию.</p></li>
+      </ol>
+
+      <dl class="stack rv">
+        <dt>Стек</dt>
+        <dd>Python, aiogram, discord.py, JavaScript, Node.js, HTML / CSS, Tailwind, Astro, Next.js, FastAPI, SQLite, PostgreSQL, Three.js</dd>
+      </dl>
+    </section>
+
+    <!-- Контакт -->
+    <section class="block contact" id="contact">
+      <header class="block__head">
+        <span class="block__no">04</span>
+        <h2 class="block__title">Контакт</h2>
+      </header>
+      <p class="contact__lead rv">Есть задача? Напишите, что нужно сделать. Отвечу, задам вопросы и&nbsp;предложу план.</p>
+      <a class="contact__big rv" data-contact="telegram" href="#contact" target="_blank" rel="noopener"><span data-contact-label="telegram">Telegram</span> <i aria-hidden="true">↗</i></a>
+      <a class="link rv" data-contact="email" href="#contact"><span data-contact-label="email">Почта</span></a>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>© <span id="year"></span> Quarsell</span>
+    <a class="link" href="../">Версия с 3D-комнатой</a>
+    <a class="link" href="#top">Наверх ↑</a>
+  </footer>
+
+  <!-- Плавающее превью строки (только мышь) -->
+  <div class="pv" aria-hidden="true"><b></b><small></small></div>
+
+  <!-- Модальное окно проекта -->
+  <dialog class="modal" id="modal" aria-labelledby="modal-title">
+    <div class="modal__inner">
+      <header class="modal__head">
+        <div>
+          <span class="modal__label">Демо-проект</span>
+          <h2 class="modal__title" id="modal-title"></h2>
+        </div>
+        <button class="modal__close" type="button" aria-label="Закрыть">Закрыть <span aria-hidden="true">✕</span></button>
+      </header>
+      <div class="modal__grid">
+        <div class="modal__info" id="modal-info"></div>
+        <div class="modal__demo" id="modal-demo"></div>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="../js/config.js"></script>
+  <script type="module" src="minimal.js"></script>
+</body>
+</html>

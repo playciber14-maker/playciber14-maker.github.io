@@ -599,6 +599,7 @@ header, main, footer { position: relative; z-index: 2; }
 .modal__info { padding: 24px; display: grid; gap: 20px; align-content: start; color: var(--text-2); font-size: 15px; }
 @media (min-width: 900px) { .modal__info { border-right: 1px solid var(--line); } }
 .modal__info h4 { margin: 0 0 6px; font-family: var(--font-mono); font-weight: 500; font-size: 12px; color: var(--accent-2); }
+.modal__info h4::before { content: "// "; }
 .modal__info ul { display: grid; gap: 6px; }
 .modal__info li { display: flex; gap: 8px; }
 .modal__info li::before { content: "→"; color: var(--accent); font-family: var(--font-mono); }

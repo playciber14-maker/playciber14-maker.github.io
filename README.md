@@ -8,7 +8,9 @@ index.html          разметка всех разделов
 css/style.css       основные стили
 css/demos.css       стили мини-демок
 js/config.js        КОНТАКТЫ (Telegram, почта) — редактировать тут
-js/main.js          меню, анимации, модальные окна
+js/main.js          меню, анимации, панели 3D-комнаты
+js/projects.js      описания проектов и модальное окно с демками (общее для обеих версий)
+minimal/            вторая версия сайта: минималистичная, без 3D (index.html, minimal.css, minimal.js)
 js/room/            3D-сцена (Three.js 0.186.1 с jsDelivr)
 js/demos/*.js       демки: tg-bot, landing, discord, crm, qr-menu, configurator, dashboard, shop-bot
 assets/favicon.svg  иконка вкладки
