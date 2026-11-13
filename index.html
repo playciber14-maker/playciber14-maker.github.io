@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quarsell — разработка ботов, сайтов и веб-приложений</title>
+  <meta name="description" content="Quarsell — разработчик Telegram- и Discord-ботов, сайтов и веб-приложений. Портфолио и контакты.">
+  <meta name="theme-color" content="#05060a">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Quarsell — боты, сайты, веб-приложения">
+  <meta property="og:description" content="Разработка Telegram- и Discord-ботов, сайтов и веб-приложений под задачи бизнеса.">
+  <meta property="og:locale" content="ru_RU">
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/demos.css">
+
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.min.js" } }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="scene-fallback" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="header" id="top">
+    <div class="container header__inner">
+      <a class="logo" href="#top" aria-label="Quarsell — на главную">
+        <span class="logo__mark" aria-hidden="true">Q</span>
+        <span class="logo__text">Quarsell</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Основное меню">
+        <a href="#about">Обо мне</a>
+        <a href="#services">Услуги</a>
+        <a href="#projects">Проекты</a>
+        <a href="#process">Как работаю</a>
+        <a href="#contacts" class="nav__cta">Написать</a>
+      </nav>
+      <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <p class="eyebrow"><span class="dot"></span> открыт для новых проектов</p>
+        <h1 class="hero__title">Quarsell</h1>
+        <p class="hero__lead">Разрабатываю Telegram- и&nbsp;Discord-ботов, сайты и&nbsp;веб-приложения под задачи бизнеса — от&nbsp;идеи до&nbsp;запуска.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#projects">Смотреть проекты</a>
+          <a class="btn btn--ghost" data-contact="telegram" href="#contacts" target="_blank" rel="noopener">Написать в Telegram</a>
+        </div>
+        <ul class="hero__tags" aria-label="Направления">
+          <li>боты</li><li>сайты</li><li>веб-приложения</li>
+        </ul>
+      </div>
+      <a class="scroll-hint" href="#about" aria-label="Прокрутить вниз"><span></span></a>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container about">
+        <div class="section__head reveal">
+          <span class="section__num">01</span>
+          <h2 class="section__title">Обо мне</h2>
+        </div>
+        <div class="about__grid">
+          <div class="about__text reveal">
+            <p class="about__big">Я&nbsp;— Quarsell, разработчик. Делаю ботов, сайты и&nbsp;веб-приложения: от&nbsp;лендинга до&nbsp;бота с&nbsp;базой данных и&nbsp;админкой.</p>
+            <p>Беру задачу целиком: уточняю цели, составляю план, пишу код, запускаю и&nbsp;передаю проект с&nbsp;понятной инструкцией. Сайты адаптивные и&nbsp;быстрые, боты не&nbsp;падают на&nbsp;странных сообщениях, а&nbsp;ключи и&nbsp;токены не&nbsp;лежат в&nbsp;коде.</p>
+          </div>
+          <div class="about__stack reveal">
+            <p class="mono-label">// стек</p>
+            <ul class="chips">
+              <li>Python</li><li>aiogram</li><li>discord.py</li><li>JavaScript</li><li>Node.js</li>
+              <li>HTML / CSS</li><li>Tailwind</li><li>Astro</li><li>Next.js</li><li>FastAPI</li>
+              <li>SQLite</li><li>PostgreSQL</li><li>Three.js</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__num">02</span>
+          <h2 class="section__title">Что я делаю</h2>
+        </div>
+        <div class="services">
+          <article class="card tilt reveal">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M21 4 3 11l6 2m12-9-4 16-8-7m12-9L9 13m0 0v6l3-3"/></svg>
+            </div>
+            <h3>Telegram и Discord-боты</h3>
+            <p>Боты для записи, заказов, рассылок, модерации и&nbsp;автоматизации рутины.</p>
+            <ul class="card__list">
+              <li>меню и кнопки, оплата, уведомления</li>
+              <li>база данных и админ-панель</li>
+              <li>модерация и верификация в Discord</li>
+            </ul>
+          </article>
+          <article class="card tilt reveal">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg>
+            </div>
+            <h3>Сайты</h3>
+            <p>Лендинги, сайты-визитки и сайты компаний, которые быстро грузятся и&nbsp;приводят заявки.</p>
+            <ul class="card__list">
+              <li>адаптив под телефоны</li>
+              <li>калькуляторы, формы, квизы</li>
+              <li>помощь с хостингом и доменом</li>
+            </ul>
+          </article>
+          <article class="card tilt reveal">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+            </div>
+            <h3>Веб-приложения</h3>
+            <p>Личные кабинеты, CRM, дашборды и&nbsp;внутренние инструменты под ваш процесс.</p>
+            <ul class="card__list">
+              <li>интерактивный интерфейс</li>
+              <li>API и интеграции</li>
+              <li>хранение данных и доступы</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__num">03</span>
+          <h2 class="section__title">Проекты</h2>
+        </div>
+        <p class="section__intro reveal">Демо-проекты с&nbsp;живыми мини-демками: открой карточку и&nbsp;попробуй прямо здесь.</p>
+        <div class="projects">
+          <article class="project tilt reveal" data-project="tg-bot">
+            <div class="project__preview project__preview--tg" aria-hidden="true">
+              <div class="pv-bubble pv-bubble--in">Записаться на шиномонтаж</div>
+              <div class="pv-bubble pv-bubble--out">Выберите услугу 👇</div>
+              <div class="pv-buttons"><span></span><span></span><span></span></div>
+            </div>
+            <div class="project__body">
+              <span class="badge">Демо-проект</span>
+              <h3>Бот записи в шиномонтаж</h3>
+              <p>Telegram-бот: выбор услуги, даты и&nbsp;свободного времени, подтверждение записи.</p>
+              <ul class="tags"><li>Telegram</li><li>Python</li><li>aiogram</li><li>SQLite</li></ul>
+              <button class="btn btn--small" type="button" data-open="tg-bot">Открыть демо</button>
+            </div>
+          </article>
+
+          <article class="project tilt reveal" data-project="landing">
+            <div class="project__preview project__preview--landing" aria-hidden="true">
+              <div class="pv-nav"><span></span><span></span><span></span></div>
+              <div class="pv-hero"><b></b><i></i><i></i></div>
+              <div class="pv-calc"><span></span><span></span><em>от 312 000 ₽</em></div>
+            </div>
+            <div class="project__body">
+              <span class="badge">Демо-проект</span>
+              <h3>Лендинг ремонтной компании</h3>
+              <p>Сайт с&nbsp;калькулятором стоимости ремонта, который считает цену на&nbsp;лету.</p>
+              <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+              <button class="btn btn--small" type="button" data-open="landing">Открыть демо</button>
+            </div>
+          </article>
+
+          <article class="project tilt reveal" data-project="discord">
+            <div class="project__preview project__preview--discord" aria-hidden="true">
+              <div class="pv-side"><span></span><span></span><span></span></div>
+              <div class="pv-chat">
+                <div class="pv-line"><b></b><i>/verify</i></div>
+                <div class="pv-embed">✅ Проверка пройдена</div>
+              </div>
+            </div>
+            <div class="project__body">
+              <span class="badge">Демо-проект</span>
+              <h3>Discord-бот верификации</h3>
+              <p>Проверка новичков, выдача ролей, предупреждения и&nbsp;антиспам по&nbsp;ссылкам.</p>
+              <ul class="tags"><li>Discord</li><li>Python</li><li>discord.py</li></ul>
+              <button class="btn btn--small" type="button" data-open="discord">Открыть демо</button>
+            </div>
+          </article>
+
+          <article class="project tilt reveal" data-project="crm">
+            <div class="project__preview project__preview--crm" aria-hidden="true">
+              <div class="pv-col"><span></span><span></span><span></span></div>
+              <div class="pv-col"><span></span><span></span></div>
+              <div class="pv-col"><span></span></div>
+            </div>
+            <div class="project__body">
+              <span class="badge">Демо-проект</span>
+              <h3>Мини-CRM для заявок</h3>
+              <p>Веб-приложение: канбан-доска заявок с&nbsp;перетаскиванием, поиском и&nbsp;суммами.</p>
+              <ul class="tags"><li>Веб-приложение</li><li>JavaScript</li><li>LocalStorage</li></ul>
+              <button class="btn btn--small" type="button" data-open="crm">Открыть демо</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section__head reveal">
+          <span class="section__num">04</span>
+          <h2 class="section__title">Как я работаю</h2>
+        </div>
+        <ol class="steps">
+          <li class="step reveal">
+            <span class="step__num">01</span>
+            <h3>Задача</h3>
+            <p>Обсуждаем цель, аудиторию, нужные функции и&nbsp;сроки.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__num">02</span>
+            <h3>План</h3>
+            <p>Составляю подробный план: что делаем, на&nbsp;чём и&nbsp;как проверим. Начинаю после вашего «ок».</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__num">03</span>
+            <h3>Разработка</h3>
+            <p>Пишу код, показываю промежуточный результат, вношу правки.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step__num">04</span>
+            <h3>Запуск</h3>
+            <p>Выкладываю проект, проверяю на&nbsp;телефоне и&nbsp;компьютере, передаю инструкцию.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- CONTACTS -->
+    <section class="section contacts" id="contacts">
+      <div class="container">
+        <div class="contacts__box reveal">
+          <span class="section__num">05</span>
+          <h2 class="contacts__title">Есть задача?<br>Давайте обсудим.</h2>
+          <p class="contacts__lead">Напишите, что нужно сделать. Отвечу, задам вопросы и&nbsp;предложу план.</p>
+          <div class="contacts__actions">
+            <a class="btn btn--primary btn--big" data-contact="telegram" href="#contacts" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4 3 11l6 2m12-9-4 16-8-7m12-9L9 13m0 0v6l3-3"/></svg>
+              <span>Telegram</span>
+            </a>
+            <a class="btn btn--ghost btn--big" data-contact="email" href="#contacts">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              <span data-contact-label="email">Почта</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© <span id="year"></span> Quarsell</span>
+      <a href="#top">Наверх ↑</a>
+    </div>
+  </footer>
+
+  <!-- Модальное окно проекта -->
+  <dialog class="modal" id="modal" aria-labelledby="modal-title">
+    <div class="modal__inner">
+      <header class="modal__head">
+        <div>
+          <span class="badge">Демо-проект</span>
+          <h2 class="modal__title" id="modal-title"></h2>
+        </div>
+        <button class="modal__close" type="button" aria-label="Закрыть">✕</button>
+      </header>
+      <div class="modal__grid">
+        <div class="modal__info" id="modal-info"></div>
+        <div class="modal__demo" id="modal-demo"></div>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="js/config.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/scene.js"></script>
+</body>
+</html>
