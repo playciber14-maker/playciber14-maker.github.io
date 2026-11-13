@@ -55,10 +55,12 @@ if (hero && !reduceMotion) {
   inner.className = "hero hero--clone";
   inner.innerHTML = hero.innerHTML;
   lens.appendChild(inner);
-  hero.appendChild(lens);
+  // Линза лежит рядом с первым экраном, а не внутри: под ней в самом экране вырезается «дырка»,
+  // поэтому стекло остаётся прозрачным и сквозь него виден фон.
+  hero.after(lens);
 
   const title = $(".hero__title", hero);
-  let R = 0, cx = 0, cy = 0, ax = 0, ay = 0; // радиус, центр и размах плавания
+  let R = 0, W = 0, H = 0, cx = 0, cy = 0, ax = 0, ay = 0; // радиус, центр и размах плавания
   let x = 0, y = 0, tx = 0, ty = 0, auto = true, visible = true, raf = 0, started = false;
 
   const size = () => {
@@ -67,6 +69,8 @@ if (hero && !reduceMotion) {
     inner.style.width = `${h.width}px`;
     inner.style.height = `${h.height}px`;
     R = lens.offsetWidth / 2;
+    W = h.width; H = h.height;
+    hero.style.setProperty("--lr", `${R}px`);
     cx = t.left - h.left + t.width / 2;
     cy = t.top - h.top + t.height / 2;
     // не даём линзе уезжать за край экрана
@@ -82,10 +86,14 @@ if (hero && !reduceMotion) {
       tx = cx + Math.sin(t * 0.33) * ax;
       ty = cy + Math.sin(t * 0.52 + 1) * ay;
     }
+    tx = Math.min(Math.max(tx, R), W - R);
+    ty = Math.min(Math.max(ty, R), H - R);
     const k = auto ? 0.04 : 0.14;
     x += (tx - x) * k;
     y += (ty - y) * k;
     lens.style.transform = `translate3d(${(x - R).toFixed(1)}px, ${(y - R).toFixed(1)}px, 0)`;
+    hero.style.setProperty("--lx", `${x.toFixed(1)}px`);
+    hero.style.setProperty("--ly", `${y.toFixed(1)}px`);
     inner.style.transformOrigin = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
     inner.style.transform = `translate(${(R - x).toFixed(1)}px, ${(R - y).toFixed(1)}px) scale(${ZOOM})`;
     raf = requestAnimationFrame(frame);
@@ -108,8 +116,10 @@ if (hero && !reduceMotion) {
   // Ждём шрифты и появление заголовка, потом показываем линзу
   const start = () => {
     size();
-    x = tx = cx + ax; y = ty = cy;
+    x = tx = cx; y = ty = cy;
     started = true;
+    frame(performance.now()); // сразу ставим линзу на место, потом показываем
+    hero.classList.add("has-lens");
     lens.classList.add("is-on");
     run();
   };
