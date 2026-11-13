@@ -17,7 +17,8 @@
   --glass-hi: rgba(255, 255, 255, .9);
   --glass-lo: rgba(18, 18, 17, .16);
   --glass-shadow: rgba(40, 36, 28, .26);
-  --blob-a: rgba(196, 184, 160, .5);
+  --blob-a: rgba(232, 150, 104, .34);
+  --accent: #cf3a12;
   --blob-b: rgba(18, 18, 17, .1);
 
   --serif: "Cormorant", "Times New Roman", Georgia, serif;
@@ -51,7 +52,8 @@
     --glass-hi: rgba(255, 255, 255, .28);
     --glass-lo: rgba(0, 0, 0, .5);
     --glass-shadow: rgba(0, 0, 0, .6);
-    --blob-a: rgba(236, 235, 230, .13);
+    --blob-a: rgba(255, 122, 77, .17);
+    --accent: #ff7a4d;
     --blob-b: rgba(150, 140, 120, .16);
   }
 }
@@ -161,34 +163,22 @@ main { position: relative; }
 @keyframes drift-a { to { transform: translate(-22vmax, 16vmax) scale(1.15); } }
 @keyframes drift-b { to { transform: translate(20vmax, -18vmax) scale(.9); } }
 
-/* ---------- Стеклянная линза ---------- */
-.lens {
-  position: absolute; left: 0; top: 0; z-index: 2; pointer-events: none;
-  width: clamp(124px, 19vw, 270px); aspect-ratio: 1; border-radius: 50%; overflow: hidden;
-  background: color-mix(in srgb, var(--glass) 40%, transparent);
-  backdrop-filter: blur(3px) saturate(1.4); -webkit-backdrop-filter: blur(3px) saturate(1.4);
-  box-shadow: 0 34px 70px -22px var(--glass-shadow), 0 2px 6px -2px var(--glass-shadow);
-  opacity: 0;
-  transition: opacity .9s var(--ease);
-  will-change: transform;
+/* ---------- Капля жидкого стекла (canvas под текстом первого экрана) ---------- */
+.hero__gl {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; display: block;
+  opacity: 0; transition: opacity .9s var(--ease);
+  -webkit-mask-image: linear-gradient(#000 82%, transparent);
+  mask-image: linear-gradient(#000 82%, transparent);
 }
-.lens.is-on { opacity: 1; }
-/* под линзой оригинальный текст вырезан, остаётся только увеличенная копия */
-.hero.has-lens {
-  -webkit-mask-image: radial-gradient(circle var(--lr) at var(--lx) var(--ly), transparent calc(100% - 1px), #000 100%);
-  mask-image: radial-gradient(circle var(--lr) at var(--lx) var(--ly), transparent calc(100% - 1px), #000 100%);
-}
-/* блики и кромка поверх увеличенного текста */
-.lens::after {
-  content: ""; position: absolute; inset: 0; border-radius: 50%;
-  background:
-    radial-gradient(55% 34% at 32% 10%, var(--glass-edge), transparent 70%),
-    radial-gradient(60% 40% at 72% 98%, var(--glass-lo), transparent 70%);
-  box-shadow: inset 0 0 0 1px var(--glass-edge), inset 0 0 16px 1px var(--glass-lo), inset 0 2px 3px var(--glass-hi);
-  opacity: .7;
-}
-.hero--clone { position: absolute; left: 0; top: 0; min-height: 0; overflow: visible; will-change: transform; }
-.hero--clone, .hero--clone * { animation: none !important; }
+.hero > :not(.hero__gl) { position: relative; z-index: 1; }
+.hero.has-gl .hero__gl { opacity: 1; }
+/* заголовок теперь нарисован в сцене; DOM-текст остаётся для чтения с экрана и выделения */
+.hero__title { transition: color .5s .5s; }
+.hero.has-gl .hero__title { color: transparent; }
+.hero.has-gl .hero__title::selection, .hero.has-gl .hero__title *::selection { color: transparent; }
+
+/* ---------- Проявление по словам ---------- */
+.scrub.is-split .scrub__w { transition: opacity .25s linear; }
 
 /* ---------- Блок ---------- */
 .block { padding: 88px var(--pad) 0; }
@@ -318,6 +308,42 @@ main { position: relative; }
   font-size: 13px; color: var(--mute);
 }
 .foot .link { color: var(--ink-2); }
+
+/* ---------- Акценты: один цвет, понемногу ---------- */
+::selection { background: var(--accent); color: #fff; }
+.hero__kicker::before {
+  content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 10px; border-radius: 50%;
+  background: var(--accent); vertical-align: 1px;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: .35; } }
+.hero__title em { color: var(--accent); }
+.hero.has-gl .hero__title em { color: transparent; }
+.block__no, .steps span { color: var(--accent); }
+.contact__big i { color: var(--accent); }
+.row__no, .row__go { transition: color .3s, transform .45s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .index .row:hover .row__no, .index .row:hover .row__go { color: var(--accent); }
+  .link:hover, .bar__nav a:hover { color: var(--accent); }
+}
+.col h3::after {
+  content: ""; display: block; width: 28px; height: 2px; margin-top: 14px; background: var(--accent);
+}
+
+/* ---------- Бегущая строка ---------- */
+.marquee {
+  margin-top: 88px; padding: 26px 0 30px; overflow: hidden;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+}
+@media (min-width: 768px) { .marquee { margin-top: 150px; } }
+.marquee__track {
+  display: flex; align-items: center; gap: .5em; width: max-content;
+  font-family: var(--serif); font-style: italic; font-size: clamp(44px, 8.5vw, 132px); line-height: 1; letter-spacing: -.02em;
+  white-space: nowrap;
+  animation: marquee 46s linear infinite;
+}
+.marquee__track i { font-style: normal; font-size: .36em; color: var(--accent); }
+@keyframes marquee { to { transform: translateX(-50%); } }
 
 /* ---------- Появление ---------- */
 .rv-on { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease), transform .9s var(--ease-out); }

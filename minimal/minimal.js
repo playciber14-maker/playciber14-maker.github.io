@@ -41,91 +41,54 @@ if ("IntersectionObserver" in window && !reduceMotion) {
   targets.forEach((el) => { el.classList.add("rv-on"); io.observe(el); });
 }
 
-/* ---------- Стеклянная линза на первом экране ---------- */
-// Внутри линзы лежит копия первого экрана, увеличенная вокруг центра линзы.
-// С мышью линза идёт за курсором, без мыши сама медленно плавает над заголовком.
+/* ---------- Капля жидкого стекла на первом экране ---------- */
+// Тяжёлый модуль с Three.js грузим отдельно, когда заголовок уже появился.
 const hero = $(".hero");
 if (hero && !reduceMotion) {
-  const ZOOM = 1.22;
-  const lens = document.createElement("div");
-  lens.className = "lens";
-  lens.setAttribute("aria-hidden", "true");
-  lens.inert = true;
-  const inner = document.createElement("div");
-  inner.className = "hero hero--clone";
-  inner.innerHTML = hero.innerHTML;
-  lens.appendChild(inner);
-  // Линза лежит рядом с первым экраном, а не внутри: под ней в самом экране вырезается «дырка»,
-  // поэтому стекло остаётся прозрачным и сквозь него виден фон.
-  hero.after(lens);
-
-  const title = $(".hero__title", hero);
-  let R = 0, W = 0, H = 0, cx = 0, cy = 0, ax = 0, ay = 0; // радиус, центр и размах плавания
-  let x = 0, y = 0, tx = 0, ty = 0, auto = true, visible = true, raf = 0, started = false;
-
-  const size = () => {
-    const h = hero.getBoundingClientRect();
-    const t = title.getBoundingClientRect();
-    inner.style.width = `${h.width}px`;
-    inner.style.height = `${h.height}px`;
-    R = lens.offsetWidth / 2;
-    W = h.width; H = h.height;
-    hero.style.setProperty("--lr", `${R}px`);
-    cx = t.left - h.left + t.width / 2;
-    cy = t.top - h.top + t.height / 2;
-    // не даём линзе уезжать за край экрана
-    ax = Math.max(0, Math.min(t.width / 2 - R * 0.6, cx - R - 8, h.width - cx - R - 8));
-    ay = t.height * 0.3;
-  };
-
-  const frame = (now) => {
-    raf = 0;
-    if (!visible) return;
-    if (auto) {
-      const t = now / 1000;
-      tx = cx + Math.sin(t * 0.33) * ax;
-      ty = cy + Math.sin(t * 0.52 + 1) * ay;
-    }
-    tx = Math.min(Math.max(tx, R), W - R);
-    ty = Math.min(Math.max(ty, R), H - R);
-    const k = auto ? 0.04 : 0.14;
-    x += (tx - x) * k;
-    y += (ty - y) * k;
-    lens.style.transform = `translate3d(${(x - R).toFixed(1)}px, ${(y - R).toFixed(1)}px, 0)`;
-    hero.style.setProperty("--lx", `${x.toFixed(1)}px`);
-    hero.style.setProperty("--ly", `${y.toFixed(1)}px`);
-    inner.style.transformOrigin = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
-    inner.style.transform = `translate(${(R - x).toFixed(1)}px, ${(R - y).toFixed(1)}px) scale(${ZOOM})`;
-    raf = requestAnimationFrame(frame);
-  };
-  const run = () => { if (!raf && visible && started) raf = requestAnimationFrame(frame); };
-
-  hero.addEventListener("pointermove", (e) => {
-    if (e.pointerType !== "mouse") return;
-    const h = hero.getBoundingClientRect();
-    auto = false;
-    tx = e.clientX - h.left;
-    ty = e.clientY - h.top;
-  });
-  hero.addEventListener("pointerleave", () => { auto = true; });
-  window.addEventListener("resize", size);
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(([en]) => { visible = en.isIntersecting; run(); }).observe(hero);
-  }
-
-  // Ждём шрифты и появление заголовка, потом показываем линзу
-  const start = () => {
-    size();
-    x = tx = cx; y = ty = cy;
-    started = true;
-    frame(performance.now()); // сразу ставим линзу на место, потом показываем
-    hero.classList.add("has-lens");
-    lens.classList.add("is-on");
-    run();
-  };
   const fontsReady = document.fonts?.ready || Promise.resolve();
-  Promise.all([fontsReady, new Promise((r) => setTimeout(r, 1200))]).then(start);
+  Promise.all([fontsReady, new Promise((r) => setTimeout(r, 1400))])
+    .then(() => import("./glass.js?v=5"))
+    .then((m) => m.initGlass(hero))
+    .catch((err) => console.warn("Стекло не загрузилось, остаётся обычный заголовок", err));
 }
+
+/* ---------- Текст проявляется по словам при прокрутке ---------- */
+$$(".scrub").forEach((el) => {
+  if (reduceMotion) return;
+  const words = [];
+  const wrap = (node) => {
+    [...node.childNodes].forEach((n) => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.data.split(/(\s+)/).forEach((part) => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.append(part); return; }
+          const sp = document.createElement("span");
+          sp.className = "scrub__w";
+          sp.textContent = part;
+          words.push(sp);
+          frag.append(sp);
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1) wrap(n);
+    });
+  };
+  wrap(el);
+  el.classList.add("is-split");
+  let raf = 0;
+  const update = () => {
+    raf = 0;
+    const r = el.getBoundingClientRect(), vh = window.innerHeight;
+    // 0, когда верх блока на 88% высоты экрана; 1, когда низ блока поднялся до 55%
+    const p = Math.min(1, Math.max(0, (vh * 0.88 - r.top) / (r.height + vh * 0.33)));
+    const lit = p * words.length;
+    words.forEach((w, i) => { w.style.opacity = Math.min(1, Math.max(0.18, lit - i + 0.18)).toFixed(2); });
+  };
+  const req = () => { if (!raf) raf = requestAnimationFrame(update); };
+  window.addEventListener("scroll", req, { passive: true });
+  window.addEventListener("resize", req);
+  update();
+});
 
 /* ---------- Превью строки, следует за курсором ---------- */
 const pv = $(".pv");
