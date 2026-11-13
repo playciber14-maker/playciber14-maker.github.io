@@ -1,6 +1,8 @@
-// Интерфейс: меню, контакты, появление блоков, 3D-наклон карточек, модалки с демками.
+// Интерфейс: меню, контакты, тема, панели разделов из 3D-комнаты, появление блоков, модалки с демками.
 
-const $ = (sel, root = document) => root.querySelector(sel);
+import { isNight, setTheme, toggleTheme } from "./theme.js";
+
+const $ =(sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -27,10 +29,17 @@ $$('[data-contact-label="email"]').forEach((el) => {
   if (email) el.textContent = email;
 });
 
+/* ---------- Тема (день / ночь) ---------- */
+setTheme(isNight()); // синхронизируем подписи кнопок
+$$(".theme-toggle").forEach((b) => b.addEventListener("click", toggleTheme));
+
 /* ---------- Шапка ---------- */
 const header = $(".header");
-const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 20);
-onScroll();
+const onScroll = () => {
+  header.classList.toggle("is-scrolled", window.scrollY > 20);
+  // ушли вниз к обычной версии — закрываем панель комнаты
+  if (panelKey && window.scrollY > window.innerHeight * 0.6) closePanel();
+};
 window.addEventListener("scroll", onScroll, { passive: true });
 
 /* ---------- Мобильное меню ---------- */
@@ -44,7 +53,63 @@ const setMenu = (open) => {
 burger.addEventListener("click", () => setMenu(burger.getAttribute("aria-expanded") !== "true"));
 $$("a", nav).forEach((a) => a.addEventListener("click", () => setMenu(false)));
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && nav.classList.contains("is-open")) setMenu(false);
+  if (e.key !== "Escape") return;
+  if (nav.classList.contains("is-open")) setMenu(false);
+  else if (panelKey && !$("#modal").open) closePanel();
+});
+
+/* ---------- Панель раздела (из 3D-комнаты) ---------- */
+const TITLES = { about: "Обо мне", services: "Что я делаю", projects: "Проекты", process: "Как я работаю", contacts: "Контакты" };
+const panel = $("#panel");
+const panelTitle = $("#panel-title");
+const panelBody = $("#panel-body");
+let panelKey = null;
+panel.inert = true;
+
+function openPanel(key) {
+  const src = document.getElementById(key);
+  if (!src || !TITLES[key]) return;
+  // Берём содержимое обычной секции — один источник текста для комнаты и HTML-версии
+  panelBody.innerHTML = src.querySelector(".container").innerHTML;
+  panelBody.querySelectorAll(".reveal").forEach((el) => el.classList.remove("reveal"));
+  panelBody.querySelectorAll("[style]").forEach((el) => el.removeAttribute("style"));
+  panelBody.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
+  panelTitle.textContent = TITLES[key];
+  panelBody.scrollTop = 0;
+  panel.inert = false;
+  panel.classList.add("is-open");
+  panel.setAttribute("aria-hidden", "false");
+  panelKey = key;
+  panel.focus({ preventScroll: true });
+  requestAnimationFrame(() => { panelBody.scrollTop = 0; });
+}
+
+function closePanel() {
+  if (!panelKey) return;
+  panelKey = null;
+  panel.classList.remove("is-open");
+  panel.setAttribute("aria-hidden", "true");
+  panel.inert = true;
+  window.dispatchEvent(new CustomEvent("room:close"));
+}
+
+window.addEventListener("room:open", (e) => openPanel(e.detail?.key));
+window.addEventListener("room:request-close", closePanel);
+$(".panel__close").addEventListener("click", closePanel);
+onScroll();
+
+// Пункты меню и кнопки с data-room: при работающей комнате — подлёт к предмету, иначе обычный якорь
+$$("[data-room]").forEach((a) => {
+  a.addEventListener("click", (e) => {
+    if (document.documentElement.dataset.room !== "on") return;
+    e.preventDefault();
+    setMenu(false);
+    const go = () => window.dispatchEvent(new CustomEvent("room:focus", { detail: { key: a.dataset.room } }));
+    if (window.scrollY > 10) {
+      window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+      setTimeout(go, reduceMotion ? 0 : 550);
+    } else go();
+  });
 });
 
 /* ---------- Появление при прокрутке ---------- */
@@ -212,6 +277,8 @@ modal.addEventListener("click", (e) => {
   if (e.target === modal) closeModal(); // клик по фону
 });
 
-$$("[data-open]").forEach((btn) => {
-  btn.addEventListener("click", () => openProject(btn.dataset.open, btn));
+// Делегирование: кнопки «Открыть демо» есть и в секции, и в панели комнаты
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("[data-open]");
+  if (btn) openProject(btn.dataset.open, btn);
 });

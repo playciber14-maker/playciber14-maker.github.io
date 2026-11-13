@@ -9,7 +9,7 @@ css/style.css       основные стили
 css/demos.css       стили мини-демок
 js/config.js        КОНТАКТЫ (Telegram, почта) — редактировать тут
 js/main.js          меню, анимации, модальные окна
-js/scene.js         3D-сцена (Three.js 0.186.1 с jsDelivr)
+js/room/            3D-сцена (Three.js 0.186.1 с jsDelivr)
 js/demos/*.js       демки: tg-bot, landing, discord, crm
 assets/favicon.svg  иконка вкладки
 ```
