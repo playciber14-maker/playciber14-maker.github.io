@@ -1,0 +1,37 @@
+import{o as e,p as t,s as n,u as r}from"./index-600fD0UX.js";import{Jt as i,_t as a,h as o,j as s,pn as c,tn as l,u}from"./events-e51d7528.esm-tagcHqY6.js";import{t as d}from"./ContactShadows-JA4AAiXx.js";import{t as f}from"./OrbitControls-CsCC956j.js";import{t as p}from"./MacBook-3SH8hwlQ.js";import{y as m}from"./textures-D-kYtN71.js";import{t as h}from"./Dust-5biFWCP_.js";var g=t(r(),1),_=n(),v=`
+  varying vec2 vUv;
+  varying vec3 vWorld;
+  void main() {
+    vUv = uv;
+    vec4 w = modelMatrix * vec4(position, 1.0);
+    vWorld = w.xyz;
+    gl_Position = projectionMatrix * viewMatrix * w;
+  }
+`,y=`
+  uniform float uOpacity;
+  uniform float uScan;
+  uniform vec3 uColor;
+  uniform vec3 uAccent;
+  varying vec3 vWorld;
+
+  float gridLine(vec2 p, float size, float width) {
+    vec2 g = abs(fract(p / size - 0.5) - 0.5) * size;
+    vec2 d = fwidth(p);
+    vec2 l = 1.0 - smoothstep(vec2(0.0), d * width, g);
+    return max(l.x, l.y);
+  }
+
+  void main() {
+    vec2 p = vWorld.xz;
+    float r = length(p);
+    float fade = 1.0 - smoothstep(2.0, 9.0, r);
+    float minor = gridLine(p, 0.25, 1.0) * 0.35;
+    float major = gridLine(p, 1.0, 1.4);
+    // centre cross-hair
+    float axis = (1.0 - smoothstep(0.0, fwidth(p.x) * 1.5, abs(p.x))) + (1.0 - smoothstep(0.0, fwidth(p.y) * 1.5, abs(p.y)));
+    float ring = smoothstep(0.08, 0.0, abs(r - uScan * 9.0)) * (1.0 - uScan);
+    vec3 col = uColor * (minor + major * 0.9) + uAccent * (axis * 0.6 + ring * 3.2);
+    float a = (minor * 0.5 + major * 0.8 + axis * 0.5) * fade * uOpacity + ring * fade * 0.9 * step(0.001, uScan);
+    gl_FragColor = vec4(col, a);
+  }
+`;function b({drive:e,y:t=-1.62}){let n=(0,g.useRef)(0),r=(0,g.useRef)(0),o=(0,g.useMemo)(()=>new i({vertexShader:v,fragmentShader:y,uniforms:{uOpacity:{value:0},uScan:{value:0},uColor:{value:new s(`#5b6b80`)},uAccent:{value:new s(`#2997ff`)}},transparent:!0,depthWrite:!1}),[]);return(0,g.useEffect)(()=>()=>o.dispose(),[o]),u((t,i)=>{let s=e.current?.explode??0;o.uniforms.uOpacity.value=a.smoothstep(s,.15,.85)*.55,r.current===0&&s>0&&(n.current=1e-4),r.current=s,n.current>0&&(n.current=Math.min(1,n.current+Math.min(i,.05)*.45),n.current>=1&&(n.current=0)),o.uniforms.uScan.value=n.current}),(0,_.jsx)(`mesh`,{rotation:[-Math.PI/2,0,0],position:[0,t,0],material:o,renderOrder:-1,raycast:()=>null,children:(0,_.jsx)(`planeGeometry`,{args:[24,24]})})}function x({drive:t,controls:n,turntable:r,poses:i,reduced:s,onPhase:u,initialPhase:d}){let f=o(e=>e.camera),p=(0,g.useRef)({env:1,pulse:0,spin:1}),m=(0,g.useRef)(d),h=(0,g.useRef)(null),_=(0,g.useCallback)(e=>{m.current=e,u(e)},[u]),v=(0,g.useCallback)((e,t,r,o,s=`power3.inOut`)=>{let u={t:0},d=new c,p=new c,m=new l,h=new l,g=new c;e.to(u,{t:1,duration:r,ease:s,onStart:()=>{d.copy(n.current?.target??i.assembled.target),m.setFromVector3(g.copy(f.position).sub(d)),h.setFromVector3(g.copy(t.pos).sub(t.target));let e=h.theta-m.theta;e>Math.PI&&(e-=Math.PI*2),e<-Math.PI&&(e+=Math.PI*2),h.theta=m.theta+e},onUpdate:()=>{let e=u.t;p.lerpVectors(d,t.target,e);let r=new l(a.lerp(m.radius,h.radius,e),a.lerp(m.phi,h.phi,e),a.lerp(m.theta,h.theta,e));f.position.setFromSpherical(r).add(p),n.current?.target.copy(p),f.lookAt(p)}},o)},[f,n,i.assembled.target]),y=(0,g.useCallback)(()=>{if(m.current!==`assembled`)return;h.current?.kill(),_(`exploding`),n.current&&(n.current.enabled=!1);let a=s?.35:1,o=e.timeline({onComplete:()=>_(`exploded`)});o.timeScale(1/a);let c=r.current;if(c){let e=Math.PI*2,t=(c.rotation.y%e+e)%e;c.rotation.y=t,o.to(c.rotation,{y:t>Math.PI?e:0,duration:1.1,ease:`power3.inOut`},0)}o.to(p.current,{spin:0,duration:.5,ease:`power2.out`},0),o.to(p.current,{env:.62,duration:.9,ease:`power2.inOut`},0),v(o,i.close,1,0),o.to(p.current,{pulse:1,duration:.16,ease:`power2.out`},.82),o.to(p.current,{pulse:0,duration:.9,ease:`power2.in`},.98),o.to(t.current,{explode:1,duration:2.9,ease:`none`},.95),v(o,i.exploded,2.5,1.15),h.current=o},[n,t,i.close,i.exploded,s,_,v,r]),b=(0,g.useCallback)(()=>{if(m.current!==`exploded`)return;h.current?.kill(),_(`assembling`),n.current&&(n.current.enabled=!1);let r=e.timeline({onComplete:()=>_(`assembled`)});r.timeScale(s?1/.35:1),r.to(t.current,{explode:0,duration:2.4,ease:`none`},0),v(r,i.assembled,2.2,.15),r.to(p.current,{env:1,duration:1.4,ease:`power2.inOut`},.9),r.to(p.current,{pulse:.5,duration:.12},2.35),r.to(p.current,{pulse:0,duration:.8},2.47),r.to(p.current,{spin:1,duration:1.2},2.4),h.current=r},[n,t,i.assembled,s,_,v]),x=(0,g.useCallback)(t=>{let r=n.current;if(!r)return;let i=f.position.clone().sub(r.target),o=a.clamp(i.length()*t,r.minDistance,r.maxDistance),s=r.target.clone().add(i.setLength(o));e.to(f.position,{x:s.x,y:s.y,z:s.z,duration:.7,ease:`power2.out`})},[f,n]),S=(0,g.useCallback)(()=>{let t=m.current===`exploded`?i.exploded:i.assembled,r=e.timeline({onStart:()=>{n.current&&(n.current.enabled=!1)},onComplete:()=>{n.current&&(n.current.enabled=!0)}});v(r,t,1.1,0)},[n,i.assembled,i.exploded,v]);return(0,g.useEffect)(()=>()=>void h.current?.progress(1),[]),{fx:p,phase:m,explode:y,reassemble:b,zoom:x,resetCamera:S}}var S=(e,t,n)=>new c(e,t,n);function C({drive:e,command:t,onCommandDone:n,phase:r,onPhase:i,hovered:c,selected:l,onHover:v,onSelect:y,reduced:C,coarse:w,low:T}){let E=(0,g.useRef)(null),D=(0,g.useRef)(null),O=(0,g.useRef)(null),k=(0,g.useRef)(null),{camera:A,scene:j,gl:M,size:N}=o(),P=Math.max(1,1.2/(N.width/Math.max(1,N.height))),F=(0,g.useMemo)(()=>{let e=P;return{assembled:{pos:S(4.2*e,2.7*e,5.4*e),target:S(0,.75,-.2)},close:{pos:S(-1.6*e,1.55*e,4.3*e),target:S(0,.55,-.2)},exploded:{pos:S(7.5*e,3.1*e,8.4*e),target:S(0,.95,-.7)}}},[P]),{fx:I,explode:L,reassemble:R,zoom:z,resetCamera:B}=x({drive:e,controls:E,turntable:D,poses:F,reduced:C,onPhase:i,initialPhase:r});(0,g.useEffect)(()=>{let t=e.current.explode>.5,n=t?F.exploded:F.assembled;A.position.copy(n.pos),E.current?.target.copy(n.target),A.lookAt(n.target),t&&(D.current&&(D.current.rotation.y=0),I.current.spin=0,I.current.env=.62)},[A,F]),(0,g.useEffect)(()=>{t&&(n(),t.type===`explode`?L():t.type===`reassemble`?R():t.type===`zoomIn`?z(.75):t.type===`zoomOut`?z(1.33):t.type===`resetCamera`&&B())},[t,L,R,z,B,n]);let V=r===`exploded`;(0,g.useEffect)(()=>{M.domElement.style.touchAction=V?`none`:`pan-y`},[M,V]);let H=(0,g.useRef)(null);return u((e,t)=>{let n=I.current;D.current&&!C&&(D.current.rotation.y+=Math.min(t,.05)*.2*n.spin),j.environmentIntensity=n.env,k.current&&(k.current.intensity=1.2+(1-n.env)*2.2),O.current&&(O.current.intensity=n.pulse*26);let r=j.background;r instanceof s&&(H.current??=r.clone(),r.copy(H.current).multiplyScalar(1-.5*a.clamp((1-n.env)/.38,0,1)))}),(0,_.jsxs)(_.Fragment,{children:[(0,_.jsx)(m,{}),(0,_.jsx)(`directionalLight`,{ref:k,position:[3,6,4],intensity:1.2}),(0,_.jsx)(`pointLight`,{ref:O,position:[0,1.4,1.2],color:`#7cc0ff`,intensity:0,distance:9,decay:1.6}),(0,_.jsx)(`group`,{ref:D,rotation:[0,-.5,0],children:(0,_.jsx)(p,{drive:e,interactive:V,hovered:c,selected:l,onHover:v,onSelect:y,onActivate:r===`assembled`?L:void 0,low:T})}),(0,_.jsx)(d,{position:[0,-.02,0],opacity:.55*(r===`assembled`?1:.35),scale:9,blur:2.6,far:2.5,resolution:512}),(0,_.jsx)(b,{drive:e}),(0,_.jsx)(h,{count:T?60:160,radius:7,opacity:.35}),(0,_.jsx)(f,{ref:E,makeDefault:!0,enabled:V||!w&&r===`assembled`,enableDamping:!0,dampingFactor:.08,enablePan:V,enableZoom:V,rotateSpeed:.7,minDistance:3,maxDistance:18*P,minPolarAngle:.15,maxPolarAngle:Math.PI*.62,target:F.assembled.target})]})}export{C as default};
