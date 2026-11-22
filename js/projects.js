@@ -3,6 +3,22 @@
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const PROJECTS = {
+  tayna: {
+    real: true,
+    title: "Сайт эко-лоджа «Тайна Мзымты»",
+    task: "Эко-лодж в Красной Поляне сдаёт два дома и баню, брони принимает по телефону и в мессенджерах. Нужен сайт, где видно, что есть в доме, сколько это стоит и когда свободно, и где владелица сама меняет цены, фото и даты.",
+    done: [
+      "10 страниц: два дома, баня, мероприятия, террасы, мангальная зона, арт-объекты, контакты и календарь",
+      "адаптив под телефон, тёмная и светлая темы",
+      "редактор в браузере: владелица сама меняет цены, тексты, телефоны и фото, есть откат к прошлым версиям",
+      "календарь занятости: занятые даты отмечаются нажатием на день",
+      "домен, сервер, HTTPS, Яндекс Вебмастер и Метрика под ключ",
+    ],
+    stack: "Astro, HTML, CSS, JavaScript, FastAPI (редактор), nginx, VPS на Ubuntu, Let's Encrypt",
+    note: "Реальный проект, сайт работает: tayna-mzymty.ru. В окне скриншоты, живой сайт откроется по кнопке.",
+    // review: { text: "…", author: "…" },  // отзыв клиента: раскомментировать, когда появится
+    demo: () => import("./demos/tayna.js"),
+  },
   "tg-bot": {
     title: "Бот записи в шиномонтаж",
     task: "Клиенты записываются по телефону, администратор теряет заявки и путается в расписании.",
@@ -155,10 +171,13 @@ async function openProject(id, trigger) {
   lastTrigger = trigger || null;
 
   modalTitle.textContent = p.title;
+  const label = $(".modal__label");
+  if (label) label.textContent = p.real ? "Реальный проект" : "Демо-проект";
   modalInfo.innerHTML = `
     <div><h4>Задача</h4><p>${esc(p.task)}</p></div>
     <div><h4>Что сделано</h4><ul>${p.done.map((d) => `<li>${esc(d)}</li>`).join("")}</ul></div>
     <div><h4>Стек</h4><p>${esc(p.stack)}</p></div>
+    ${p.review ? `<blockquote class="modal__review"><p>${esc(p.review.text)}</p><footer>${esc(p.review.author)}</footer></blockquote>` : ""}
     <p class="modal__note">${esc(p.note)}</p>`;
   modalDemo.innerHTML = '<p class="demo-loading">Загружаю демо…</p>';
 
