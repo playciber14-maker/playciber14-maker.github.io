@@ -1,6 +1,6 @@
 // Минималистичная версия: контакты, появление блоков, превью строк. Модалка с демками — общий модуль.
 
-import "../js/projects.js?v=3";
+import "../js/projects.js?v=4";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
